@@ -29,14 +29,35 @@
   font-display: swap;
 }
 
-/* Metric-matched fallback: a local Arial re-shaped to Public Sans' line box so
-   the body→session swap shifts nothing. Calibration computed from the woff2. */
+/* Metric-matched fallbacks: local Arial re-shaped to each brand face's line box
+   so the swap-in shifts nothing (zero CLS). Calibration computed from the woff2s.
+   Body uses the renamed "Arial" face; the display faces use dedicated fallback
+   families placed second in their stacks (they must NOT reuse "Arial", which the
+   body match already redefines). */
 @font-face {
   font-family: Arial;
   src: local("Arial");
   size-adjust: 123.36%;
   ascent-override: 77.01%;
   descent-override: 18.24%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Lilita One Fallback";
+  src: local("Arial");
+  size-adjust: 95.83%;
+  ascent-override: 96.32%;
+  descent-override: 22.96%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Bebas Neue Fallback";
+  src: local("Arial");
+  size-adjust: 87.67%;
+  ascent-override: 102.65%;
+  descent-override: 34.22%;
   line-gap-override: 0%;
 }
 
@@ -51,8 +72,8 @@
   --hairline: #2a2a2a;
 
   /* Typography */
-  --hero: "Lilita One", "Bowlby One", impact, system-ui, sans-serif;
-  --display: "Bellfort", "Bebas Neue", "Arial Narrow", arial, sans-serif;
+  --hero: "Lilita One", "Lilita One Fallback", impact, system-ui, sans-serif;
+  --display: "Bellfort", "Bebas Neue", "Bebas Neue Fallback", "Arial Narrow", arial, sans-serif;
   --body: "Public Sans", arial, sans-serif;
 
   /* Spacing */
@@ -137,6 +158,27 @@ h5,
 h6 { margin: 0; }
 
 p { margin: 0; }
+
+/*
+ * Reserve the static header's height. The header fragment is injected by
+ * postlcp.js AFTER first paint; without a reserved box the hero (first section)
+ * starts at y=0 then jumps down when the fragment lands → CLS. These min-heights
+ * match the fragment's rendered height per breakpoint (banner + nav bar); the
+ * all-black ground hides any small reserve-vs-actual delta. Keep in sync with the
+ * fragment's breakpoints (burger ≤767px).
+ */
+header {
+  min-height: 98px;
+  background: var(--brand-black);
+}
+
+@media (width <= 767px) {
+  header { min-height: 102px; }
+}
+
+@media (width <= 480px) {
+  header { min-height: 120px; }
+}
 
 /* ---- EDS section scaffold ---- */
 main .section { display: block; }
