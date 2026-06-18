@@ -1,0 +1,114 @@
+<style>
+  /* Host element gets class "footer" (set by postlcp.js). The footer's own box
+     styles (padding + background) live on footer.footer so it paints its own ground. */
+  footer.footer {
+    display: block;
+    padding: 64px var(--section-pad-desktop) 32px;
+    background: var(--brand-black);
+  }
+
+  .ds-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2xl);
+    margin-bottom: 64px;
+  }
+
+  .ds-footer-col h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brand-yellow);
+    margin: 0 0 var(--space-md);
+  }
+
+  .ds-footer-col ul { list-style: none; padding: 0; margin: 0; }
+  .ds-footer-col li { margin-bottom: var(--space-sm); }
+
+  .ds-footer-col a {
+    font-family: var(--body);
+    font-size: 0.875rem;
+    color: var(--surface-white);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-state) var(--ease-snap);
+  }
+
+  .ds-footer-col a:hover { border-bottom-color: var(--brand-yellow); }
+
+  .ds-footer-bottom {
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    font-family: var(--body);
+    font-size: 0.75rem;
+    color: var(--neutral-grey);
+    letter-spacing: 0.04em;
+  }
+
+  .ds-footer-bottom .ds-est-mark {
+    color: var(--brand-yellow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .ds-footer-bottom .ds-footer-inquiry a {
+    color: var(--surface-white);
+    border-bottom: 1px solid var(--hairline);
+    transition: border-color var(--dur-state) var(--ease-snap);
+  }
+
+  .ds-footer-bottom .ds-footer-inquiry a:hover { border-bottom-color: var(--brand-yellow); }
+
+  @media (max-width: 1023px) {
+    footer.footer { padding-inline: var(--section-pad-tablet); }
+    .ds-footer-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); }
+  }
+
+  @media (max-width: 640px) {
+    footer.footer { padding-inline: var(--section-pad-mobile); }
+    .ds-footer-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+    .ds-footer-bottom { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+  }
+</style>
+
+<div class="ds-footer-grid">
+  <div class="ds-footer-col">
+    <h2>The Bottling Works</h2>
+    <ul>
+      <li><a href="/the-bottling-works">Our story</a></li>
+      <li><a href="/the-bottling-works#the-people">The crew</a></li>
+      <li><a href="/the-bottling-works#the-place">The Wasatch Back</a></li>
+      <li><a href="/press">Press</a></li>
+    </ul>
+  </div>
+  <div class="ds-footer-col">
+    <h2>Soda Fountains</h2>
+    <ul>
+      <li><a href="/soda-fountains#heber-valley">Heber Valley</a></li>
+      <li><a href="/soda-fountains#park-city">Park City</a></li>
+      <li><a href="/soda-fountains#hours">Hours</a></li>
+      <li><a href="/private-events">Private events</a></li>
+    </ul>
+  </div>
+  <div class="ds-footer-col">
+    <h2>The Soda</h2>
+    <ul>
+      <li><a href="/sodas">The lineup</a></li>
+      <li><a href="/sodas#year-round">Year-round</a></li>
+      <li><a href="/sodas#seasonal">Seasonal</a></li>
+      <li><a href="/sodas#powder-day">Powder Day 2026</a></li>
+    </ul>
+  </div>
+</div>
+<div class="ds-footer-bottom">
+  <span>© 2026 Wasatch Back Sodaworks LLC. All rights reserved.</span>
+  <span class="ds-footer-inquiry">Inquiries: <a href="mailto:hello@drinkwasatchback.com">hello@drinkwasatchback.com</a></span>
+  <span class="ds-est-mark">Est 1996 · Heber Valley, Utah</span>
+</div>

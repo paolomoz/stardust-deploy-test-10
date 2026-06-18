@@ -1,0 +1,214 @@
+<style>
+  /* Host element gets class "header" (set by postlcp.js). Holds the promo
+     banner + sticky nav bar. CSS-only mobile menu via the checkbox hack —
+     fragments run no JS, so the prototype's nav <script> is intentionally dropped
+     (Escape-to-close / click-to-close were progressive enhancements only). */
+  header.header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: block;
+  }
+
+  .ds-eyebrow-banner {
+    background: var(--brand-yellow);
+    color: var(--brand-black);
+    padding: 8px var(--section-pad-desktop);
+    text-align: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(0.875rem, 1.2vw, 1rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .ds-header-bar {
+    position: relative;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 70%) 0%, rgb(0 0 0 / 0%) 100%);
+    color: var(--surface-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px var(--section-pad-desktop);
+  }
+
+  .ds-wordmark {
+    color: var(--surface-white);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .ds-est { color: var(--brand-yellow); font-size: 0.6875rem; letter-spacing: 0.16em; }
+
+  .ds-nav { display: flex; gap: 28px; align-items: center; }
+
+  .ds-nav a {
+    color: var(--surface-white);
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color var(--dur-state) var(--ease-snap);
+  }
+
+  .ds-nav a:hover,
+  .ds-nav a[aria-current="page"] { border-bottom-color: var(--brand-yellow); }
+
+  .ds-nav-toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    white-space: nowrap;
+  }
+
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ds-nav-burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .ds-nav-toggle:focus-visible ~ .ds-nav-burger { outline: 2px solid var(--brand-yellow); outline-offset: 2px; }
+
+  .ds-nav-burger-icon,
+  .ds-nav-burger-icon::before,
+  .ds-nav-burger-icon::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--surface-white);
+    transition: transform var(--dur-state) var(--ease-snap), background var(--dur-state) var(--ease-snap), opacity var(--dur-state) var(--ease-snap);
+  }
+
+  .ds-nav-burger-icon { position: relative; }
+
+  .ds-nav-burger-icon::before,
+  .ds-nav-burger-icon::after { content: ''; position: absolute; left: 0; }
+  .ds-nav-burger-icon::before { transform: translateY(-7px); }
+  .ds-nav-burger-icon::after { transform: translateY(7px); }
+
+  .ds-nav-toggle:checked ~ .ds-nav-burger .ds-nav-burger-icon { background: transparent; }
+  .ds-nav-toggle:checked ~ .ds-nav-burger .ds-nav-burger-icon::before { transform: translateY(0) rotate(45deg); background: var(--brand-yellow); }
+  .ds-nav-toggle:checked ~ .ds-nav-burger .ds-nav-burger-icon::after { transform: translateY(0) rotate(-45deg); background: var(--brand-yellow); }
+
+  @media (max-width: 1023px) {
+    .ds-eyebrow-banner { padding-inline: var(--section-pad-tablet); }
+  }
+
+  @media (max-width: 640px) {
+    .ds-eyebrow-banner { padding-inline: var(--section-pad-mobile); }
+
+    .ds-header-bar {
+      padding: 12px var(--section-pad-mobile);
+      flex-wrap: nowrap;
+      gap: var(--space-md);
+    }
+
+    .ds-wordmark { flex-shrink: 0; font-size: 1rem; gap: 8px; }
+    .ds-est { font-size: 0.625rem; letter-spacing: 0.14em; }
+    .ds-nav-burger { display: inline-flex; }
+
+    .ds-nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--brand-black);
+      border-top: 1px solid var(--hairline);
+      border-bottom: 4px solid var(--brand-yellow);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--space-sm) var(--section-pad-mobile) var(--space-lg);
+      transform: translateY(-12px);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: transform var(--dur-state) var(--ease-snap), opacity var(--dur-state) var(--ease-snap), visibility 0s linear var(--dur-state);
+    }
+
+    .ds-nav-toggle:checked ~ .ds-nav {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transition: transform var(--dur-state) var(--ease-snap), opacity var(--dur-state) var(--ease-snap), visibility 0s linear 0s;
+    }
+
+    .ds-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: var(--space-md) 0;
+      font-family: var(--display);
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--surface-white);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .ds-nav a:last-child { border-bottom: 0; }
+    .ds-nav a:hover,
+    .ds-nav a[aria-current="page"] { color: var(--brand-yellow); border-bottom-color: var(--brand-yellow); }
+  }
+</style>
+
+<div class="ds-eyebrow-banner">
+  Powder Day 2026 limited run pouring now at both soda fountains · Heber + Park City
+</div>
+
+<div class="ds-header-bar">
+  <a class="ds-wordmark" href="/" aria-label="Wasatch Back Sodaworks, established 1996">
+    Wasatch Back <span class="ds-est">Est 1996</span>
+  </a>
+
+  <input class="ds-nav-toggle" type="checkbox" id="ds-nav-toggle" aria-label="Toggle menu">
+  <label class="ds-nav-burger" for="ds-nav-toggle" aria-controls="ds-nav-list">
+    <span class="ds-nav-burger-icon" aria-hidden="true"></span>
+    <span class="ds-sr-only">Menu</span>
+  </label>
+
+  <nav class="ds-nav" id="ds-nav-list" aria-label="Primary">
+    <a href="/" aria-current="page">Home</a>
+    <a href="/sodas">Sodas</a>
+    <a href="/the-bottling-works">The Bottling Works</a>
+    <a href="/soda-fountains">Soda Fountains</a>
+  </nav>
+</div>
